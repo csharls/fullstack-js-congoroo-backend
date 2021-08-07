@@ -25,6 +25,8 @@ const app = new express()
     }
   ]
 
+app.use(express.json())
+
 app.get('/', (req,res)=> {
   res.send("Welcome to the phonebook api server")
 })
@@ -54,6 +56,28 @@ app.delete('/api/persons/:id', (req,res) => {
   const id = Number(req.params.id)
   persons = persons.filter(p=> p.id !== id)
   res.status(204).send()
+})
+
+app.post('/api/persons',(req,res) => {
+  const person = req.body
+  
+  if(person|| person.number) {
+    const id = Math.max(...persons.map(p=>p.id))
+    const newPerson = {
+      name: person.name,
+      number: person.number,
+      id: id + 1
+    }
+    persons = [...persons, newPerson]
+
+    res.status(201).json(newPerson)
+  }
+  else{
+    res.status(400).json({
+      error: 'Phone number is missing'
+    })
+
+  }
 })
 
 const PORT = '3001'
