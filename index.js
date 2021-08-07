@@ -2,7 +2,7 @@ const express = require('express')
 
 const app = new express()
 
-  const persons=[
+  let persons=[
     {
       "name": "Arto Hellas",
       "number": "040-134567",
@@ -28,9 +28,7 @@ const app = new express()
 app.get('/', (req,res)=> {
   res.send("Welcome to the phonebook api server")
 })
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
-})
+
 app.get('/info',(req, res)=>{
   const total = persons.length
   const date = new Date()
@@ -39,12 +37,23 @@ app.get('/info',(req, res)=>{
   <p>Phonebook has info for ${total} people</p>
   <p>${date}</p>`)
 })
+
+app.get('/api/persons', (req, res) => {
+  res.json(persons)
+})
+
 app.get('/api/persons/:id',(req,res)=> {
   const id = Number(req.params.id)
   const person = persons.find(p => p.id === id)
   person
   ? res.json(person)
   : res.status(404).send()
+})
+
+app.delete('/api/persons/:id', (req,res) => {
+  const id = Number(req.params.id)
+  persons = persons.filter(p=> p.id !== id)
+  res.status(204).send()
 })
 
 const PORT = '3001'
