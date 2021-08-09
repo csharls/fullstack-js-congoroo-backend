@@ -1,4 +1,5 @@
 const express = require('express')
+const morgan = require('morgan')
 
 const app = new express()
 
@@ -26,6 +27,9 @@ const app = new express()
   ]
 
 app.use(express.json())
+app.use(morgan('tiny'))
+
+
 
 app.get('/', (req,res)=> {
   res.send("Welcome to the phonebook api server")
