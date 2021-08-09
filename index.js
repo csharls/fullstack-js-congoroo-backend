@@ -61,7 +61,16 @@ app.delete('/api/persons/:id', (req,res) => {
 app.post('/api/persons',(req,res) => {
   const person = req.body
   
-  if(person|| person.number) {
+  const personExist = persons.find( p => p.name === person.name )
+
+  if(personExist) {
+    res.status(409).json({
+      error: `${person.name} already exist`
+    })
+  }
+  
+  
+  if( !personExist && person.number ) {
     const id = Math.max(...persons.map(p=>p.id))
     const newPerson = {
       name: person.name,
