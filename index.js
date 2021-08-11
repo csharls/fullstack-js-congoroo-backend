@@ -43,7 +43,6 @@ app.get('/', (req,res)=> {
 app.get('/info',(req, res)=>{
   const total = persons.length
   const date = new Date()
-  const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC', timeZoneName:'long'};
   res.send(`
   <p>Phonebook has info for ${total} people</p>
   <p>${date}</p>`)
