@@ -74,7 +74,7 @@ app.get('/api/persons/:id',(req,res)=> {
 })
 
 app.delete('/api/persons/:id', (req,res) => {
-  
+
   const id = Number(req.params.id)
   persons = persons.filter(p=> p.id !== id)
   res.status(204).send()
@@ -82,33 +82,16 @@ app.delete('/api/persons/:id', (req,res) => {
 
 app.post('/api/persons',(req,res) => {
   const person = req.body
-  
-  const personExist = persons.find( p => p.name === person.name )
 
-  if(personExist) {
-    res.status(409).json({
-      error: `${person.name} already exist`
-    })
-  }
-  
-  
-  if( !personExist && person.number ) {
-    const id = Math.max(...persons.map(p=>p.id))
-    const newPerson = {
-      name: person.name,
-      number: person.number,
-      id: id + 1
-    }
-    persons = [...persons, newPerson]
+  const newPerson = new Person( {
+    name: person.name,
+    number: person.number
+  })
 
-    res.status(201).json(newPerson)
-  }
-  else{
-    res.status(400).json({
-      error: 'Phone number is missing'
-    })
-
-  }
+  newPerson.save()
+  .then(savedPerson =>{
+    res.status(201).json(savedPerson)
+  })
 })
 
 const PORT = process.env.PORT || '3001'
