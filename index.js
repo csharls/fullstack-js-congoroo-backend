@@ -58,7 +58,7 @@ app.delete('/api/persons/:id', (req,res) => {
   .catch(error => next(error))
 })
 
-app.post('/api/persons',(req,res) => {
+app.post('/api/persons',(req, res, next) => {
   const person = req.body
 
   const newPerson = new Person( {
@@ -95,6 +95,14 @@ const wrongIdHandler = (error, request, response, next) => {
   }
   next(error)
 }
+const validationErrorHandler = (error, request, response, next) => {
+  console.log(error);
+if(error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
+  next(error)
+}
+
 
 const errorHandler = (error,req, res) => {
     console.log(error)
@@ -106,6 +114,7 @@ const unknowEndpoint = (req, res) => {
 }
 
 app.use(wrongIdHandler)
+app.use(validationErrorHandler)
 app.use(errorHandler)
 app.use(unknowEndpoint)
 
