@@ -82,7 +82,7 @@ app.put('/api/persons/:id', (req, res, next) => {
     number: body.number
   }
 
-  Person.findByIdAndUpdate(person.id, person, {new: true})
+  Person.findByIdAndUpdate(person.id, person, {new: true, runValidators:true, context: 'query'})
   .then(updatedPerson => {
     res.json(updatedPerson)
   })
@@ -102,11 +102,9 @@ if(error.name === 'ValidationError') {
   }
   next(error)
 }
-
-
-const errorHandler = (error,req, res) => {
+const errorHandler = (error,req, response) => {
     console.log(error)
-    res.status(500).end()
+    response.status(500).end()
 }
 
 const unknowEndpoint = (req, res) => {
