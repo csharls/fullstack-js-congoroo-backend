@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 var uniqueValidator = require('mongoose-unique-validator')
 require('dotenv').config()
 
-const {MONGO_DB_URI} = process.env
+const { MONGO_DB_URI } = process.env
 
-mongoose.connect(MONGO_DB_URI, {useNewUrlParser: true, useUnifiedTopology:true, useFindAndModify:false, useCreateIndex: true})
+mongoose.connect(MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology:true, useFindAndModify:false, useCreateIndex: true })
 
 const personSchema = new mongoose.Schema(
   {
@@ -15,9 +15,9 @@ const personSchema = new mongoose.Schema(
       minlength: 3
     },
     number: {
-     type: String,
-    minlength: 8
-  }
+      type: String,
+      minlength: 8
+    }
   }
 )
 
